@@ -216,7 +216,6 @@ namespace CS6456_myNote
                     uiEle.AddHandler(Button.MouseLeftButtonDownEvent, new MouseButtonEventHandler(Element_MouseLeftButtonDown), true);
                     uiEle.AddHandler(Button.MouseMoveEvent, new MouseEventHandler(Element_MouseMove), true);
                     uiEle.AddHandler(Button.MouseLeftButtonUpEvent, new MouseButtonEventHandler(Element_MouseLeftButtonUp), true);
-
                     uiEle.AddHandler(Button.MouseDoubleClickEvent, new MouseButtonEventHandler(Element_MouseDoubleClick), true);
                     continue;
                 }
@@ -390,35 +389,19 @@ namespace CS6456_myNote
 
 
         ////////////////////////////////////////////  UI Operations   Chutian Wang 
-        void Pdf_DragOver(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effects = DragDropEffects.Copy;
-                var fileViewer = sender as DocumentViewer;
-                fileViewer.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(155, 155, 155));
-            }
-            else
-            {
-                e.Effects = DragDropEffects.None;
-            }
-        }
-        void Pdf_Dragleave(object sender, DragEventArgs e)
+       
+        void Doc_Dragleave(object sender, DragEventArgs e)
         {
             var fileViewer = sender as DocumentViewer;
             fileViewer.Background = new SolidColorBrush(Color.FromRgb(226, 226, 226));
         }
-        void myPdfInitial()
-        {
-
-        }
+       
         private List<string> fileName = new List<string>();
 
         private void Opbtn_Click(object sender, RoutedEventArgs e)
         {
             // Create OpenFileDialog
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
             // Set filter for file extension and default file extension
             dlg.DefaultExt = ".doc";
             dlg.Filter = "Word documents (.doc)|*.doc";
@@ -439,6 +422,62 @@ namespace CS6456_myNote
             }
 
         }
+
+
+        private void drag_file_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effects = DragDropEffects.Link;
+            else e.Effects = DragDropEffects.None;
+        }
+        private void drag_file_Drop(object sender, DragEventArgs e)
+        {
+            string fileName = ((System.Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
+            //Console.WriteLine(fileName);
+            XpsDocument xpsDoc = new XpsDocument(fileName, System.IO.FileAccess.Read);
+            fileViewer.Document = xpsDoc.GetFixedDocumentSequence();
+        }
+        
+
+        
+        private void fileViewer_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TextBox objText = sender as TextBox;
+            DragDrop.DoDragDrop(objText, objText, DragDropEffects.Copy);
+        }
+        private void my_Note_Menu_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //get the draged file
+            TextBox objText = sender as TextBox;
+            DragDrop.DoDragDrop(objText, objText, DragDropEffects.Copy);
+        }
+
+        private void my_NoteArea_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Text))
+                e.Effects = DragDropEffects.Copy;
+            else
+                return;
+            my_NoteArea.Children.Add(new TextBox());
+
+            UIElement newUIE = my_NoteArea.Children[my_NoteArea.Children.Count - 1];
+
+            newUIE.SetValue(Canvas.LeftProperty, 40d);
+            newUIE.SetValue(Canvas.TopProperty, 40d);
+            newUIE.SetValue(Canvas.WidthProperty, 60d);
+            newUIE.SetValue(Canvas.HeightProperty, 60d);
+
+            newUIE.AddHandler(Button.MouseLeftButtonDownEvent, new MouseButtonEventHandler(Element_MouseLeftButtonDown), true);
+            newUIE.AddHandler(Button.MouseMoveEvent, new MouseEventHandler(Element_MouseMove), true);
+            newUIE.AddHandler(Button.MouseLeftButtonUpEvent, new MouseButtonEventHandler(Element_MouseLeftButtonUp), true);
+
+            newUIE.AddHandler(Button.MouseDoubleClickEvent, new MouseButtonEventHandler(Element_MouseDoubleClick), true);
+
+            myUIList.Add(new myUI(0, 0, 0, 0));
+           // newUIE.text(dp,e.Data.GetData(DataFormats.Text));
+        }
+
+        
 
         private XpsDocument ConvertWordDocToXPSDoc(string wordDocName, string xpsDocName)
         {

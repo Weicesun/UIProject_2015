@@ -5,7 +5,7 @@
     <!-- No resize, need implement at last-->
     <Canvas Margin="0,0,0,0" Background="#FFE2D3D3">
 
-        <Canvas x:Name="my_NoteArea" Height="457" Canvas.Left="353" Canvas.Top="113" Width="441" Background="#FFF59191">
+        <Canvas x:Name="my_NoteArea" Height="457" Canvas.Left="353" Canvas.Top="113" Width="441" Background="#FFF59191" Drop="my_NoteArea_Drop">
             <Rectangle x:Name="com_Indicator" Height="100" Canvas.Left="545" Stroke="Black" Canvas.Top="348" Width="100" StrokeDashArray="1 1" StrokeThickness="2" Panel.ZIndex="10">
                 <Rectangle.Fill>
                     <SolidColorBrush Color="White" Opacity="0"/>
@@ -21,11 +21,13 @@
         <Canvas x:Name="my_pdfViewer" Height="487" Canvas.Top="83" Width="348" Background="#FFF83D3D">
             <Button x:Name="Opbtn" Content="Open" Width="75" RenderTransformOrigin="0.547,3.591" Click="Opbtn_Click"/>
             <DocumentViewer x:Name="fileViewer" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="27"        
-                            Background="BlueViolet" Width="348" Height="460" AllowDrop="True"/>
+                            Background="BlueViolet" Width="348" Height="460" AllowDrop="True" 
+                            MouseDown="fileViewer_MouseDown" />
+            <Label x:Name="drag_file" Background="AntiqueWhite" Height="22" Width="268" AllowDrop="True" Canvas.Left="80" DragEnter="drag_file_DragEnter" Drop="drag_file_Drop"></Label>
         </Canvas>
         <!-- pdf area -->
         <Canvas x:Name="my_thumbnail" Height="83" Width="794" Background="#FF873131"/>
-        <Canvas x:Name="my_Note_Menu" Height="30" Canvas.Left="353" Canvas.Top="83" Width="441" Background="#FFFFB7B7">
+        <Canvas x:Name="my_Note_Menu" Height="30" Canvas.Left="353" Canvas.Top="83" Width="441" Background="#FFFFB7B7" MouseDown="my_Note_Menu_MouseDown" >
             <Button Content="Button" Width="65" Height="30" Click="NewButton_Click"/>
             <Label x:Name="Ctrl_Sig" Content="" Canvas.Left="419" Height="13" Width="12" OpacityMask="Black" Background="Green" Canvas.Top="7"/>
         </Canvas>
