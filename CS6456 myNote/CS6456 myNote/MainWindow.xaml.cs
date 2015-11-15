@@ -389,13 +389,7 @@ namespace CS6456_myNote
 
 
         ////////////////////////////////////////////  UI Operations   Chutian Wang 
-       
-        void Doc_Dragleave(object sender, DragEventArgs e)
-        {
-            var fileViewer = sender as DocumentViewer;
-            fileViewer.Background = new SolidColorBrush(Color.FromRgb(226, 226, 226));
-        }
-       
+            
         private List<string> fileName = new List<string>();
 
         private void Opbtn_Click(object sender, RoutedEventArgs e)
@@ -472,7 +466,6 @@ namespace CS6456_myNote
             newUIE.AddHandler(Button.MouseLeftButtonUpEvent, new MouseButtonEventHandler(Element_MouseLeftButtonUp), true);
 
             newUIE.AddHandler(Button.MouseDoubleClickEvent, new MouseButtonEventHandler(Element_MouseDoubleClick), true);
-
             myUIList.Add(new myUI(0, 0, 0, 0));
            // newUIE.text(dp,e.Data.GetData(DataFormats.Text));
         }
